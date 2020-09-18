@@ -180,7 +180,7 @@ def main():
     DEVICE_ID = CONFIG['device']['ID']
     MQTT_CONF = CONFIG['mqtt']
 
-    mqttc = mqtt.Client(client_id=f'{DEVICE_NAME}/{DEVICE_ID}-GPS')
+    mqttc = mqtt.Client(client_id=f'{DEVICE_NAME}/{DEVICE_ID}-IMU')
     mqttc = setup_mqtt_client(MQTT_CONF, mqttc)
 
     mqttc.on_connect = on_connect
@@ -190,9 +190,11 @@ def main():
     mqttc.connect(CONFIG['mqtt']['broker'], CONFIG['mqtt']['port'])
 
     logger.info('Connecting to IMU (BNO055) Device')
-    logger.debug(f'Device @i2c-{CONFIG['imu']['i2cPort']} with update rate={CONFIG['imu']['updaterate']}')
+    I2C_PORT = CONFIG['imu']['i2cPort']
+    I2C_UPDATERATE = CONFIG['imu']['i2cPort']
+    logger.debug(f'Device @i2c-{I2C_PORT} with update rate={I2C_UPDATERATE}')
 
-    read_from_imu(CONFIG['imu']['i2cPort'], CONFIG['imu']['updaterate'], mqttc)
+    read_from_imu(I2C_PORT, I2C_UPDATERATE, mqttc)
 
 
 if __name__ == "__main__":
