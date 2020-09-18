@@ -1,4 +1,4 @@
-# gpsfluxlite
+# bnofluxlite
 
 A lighter version of [`bnoflux`](https://github.com/iotfablab/bnoflux) without the usage of `influxdb-python`.
 
