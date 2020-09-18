@@ -1,0 +1,34 @@
+{
+    "device": {
+        "name": "IOTDEV",
+        "ID": "0001"
+    },
+    "influx": {
+        "host": "localhost"
+    },
+    "mqtt": {
+        "broker": "localhost",
+        "port": 1883,
+        "username": null,
+        "password": null,
+        "TLS": {
+          "enable": false,
+          "insecure": false,
+          "tls_version": "tlsv1.2",
+          "certs": {
+            "certdir": "/etc/ssl/mqtt/",
+            "cafile": "ca.crt",
+            "certfile": "mqtt-client.crt",
+            "keyfile": "mqtt-client.key"
+          }
+        }
+    },
+    "imu": {
+        "i2cPort": 0,
+        "updaterate": 0.05,
+        "udp_port": 8095,
+        "topics": [
+            "imu"
+        ]
+    }
+}

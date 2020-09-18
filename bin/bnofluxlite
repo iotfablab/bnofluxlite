@@ -1,0 +1,6 @@
+#!/usr/bin/env python3
+
+from bnofluxlite import bnofluxlite
+
+if __name__ == '__main__':
+    bnofluxlite.main()
