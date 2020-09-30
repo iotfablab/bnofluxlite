@@ -43,6 +43,7 @@ def on_publish(mqttc, obj, mid):
 
 
 def on_disconnect(mqttc, obj, rc):
+    """MQTT Callback Function upon disconnecting from MQTT Broker"""
     if rc == 0:
         logger.debug("MQTT DISCONNECTED: rc: " + str(rc))
         logger.debug("Disconnected Successfully from MQTT Broker")
@@ -99,7 +100,7 @@ def send_data(payloads, mqtt_client):
             data =  ''.join(list(payloads.queue))
             payloads.queue.clear()
             topic_to_publish = DEVICE_NAME + '/' + DEVICE_ID + '/' + topic
-            logger.debug(data)
+            #logger.debug(data)
             mqtt_client.publish(topic_to_publish, data, qos=1)
             INFLUX_SOCKET.sendto(data.encode('utf-8'), (CONFIG['influx']['host'], CONFIG['imu']['udp_port']))
 
@@ -107,9 +108,9 @@ def send_data(payloads, mqtt_client):
 def read_from_imu(i2c_port, updaterate, mqttc):
     """Read from BNO055 Sensor using I2C Port and push data into payload Queue"""
     logger.info(f'Starting to Read BNO values on {i2c_port} every {updaterate}s')
-    queue_capacity = 1 / updaterate
+    queue_capacity = (int (1 / updaterate) + 1)
     payload_q = Queue(maxsize=queue_capacity)
-    logger.debug(f'Setting Queue Capacity of {queue_capacity} equal to Sampling rate')
+    logger.debug(f'Setting Queue Capacity of {queue_capacity} >= Sampling rate')
     sensor_bno = BNO055(i2c_bus_port=i2c_port)
     if sensor_bno.begin() is not True:
         raise ValueError('Initialization Failure for BNO055')
@@ -138,7 +139,9 @@ def read_from_imu(i2c_port, updaterate, mqttc):
             time.sleep(updaterate)
             
             if payload_q.full():
+                logger.info('Payload Queue is Full. Publishing to Broker.')
                 send_data(payload_q, mqttc)
+                time.sleep(1.0) # sleep for a second in order not to hog up the sending
 
         except Exception as imu_e:
             logger.exception(f'Error while reading IMU data: {imu_e}')
