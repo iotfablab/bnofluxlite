@@ -194,7 +194,7 @@ def main():
 
     logger.info('Connecting to IMU (BNO055) Device')
     I2C_PORT = CONFIG['imu']['i2cPort']
-    I2C_UPDATERATE = CONFIG['imu']['i2cPort']
+    I2C_UPDATERATE = CONFIG['imu']['updaterate']
     logger.debug(f'Device @i2c-{I2C_PORT} with update rate={I2C_UPDATERATE}')
 
     read_from_imu(I2C_PORT, I2C_UPDATERATE, mqttc)
