@@ -7,7 +7,7 @@ def readme():
 
 
 setup(name='bnofluxlite',
-    version='0.0.1',
+    version='0.0.2',
     description='CLI to parse BNO055 IMU data and publish them via MQTT and store into InfluxDB',
     long_description=readme(),
     author='Shan Desai',
